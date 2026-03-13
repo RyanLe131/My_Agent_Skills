@@ -1,0 +1,115 @@
+# Anthropic Claude Agent Configuration for RAG Framework
+# Use this as a reference for configuring Claude-based agents in RAG systems.
+
+agent:
+  name: rag-assistant-claude
+  description: >
+    A retrieval-augmented generation assistant powered by Anthropic Claude.
+    Answers questions grounded in a knowledge base using vector search
+    to retrieve relevant context before generating answers.
+
+model:
+  name: claude-sonnet-4-20250514
+  temperature: 0
+  max_tokens: 4096
+  top_p: 1.0
+  # Alternative models:
+  #   claude-opus-4-20250514   — highest quality, complex reasoning
+  #   claude-sonnet-4-20250514 — balanced quality and speed
+  #   claude-3-5-haiku-20241022   — fastest, cost-efficient
+
+system_prompt_file: ../templates/system_prompt.txt
+
+behavior:
+  grounding: strict
+  abstention: true
+  citations: true
+  streaming: true
+
+retrieval:
+  embedding_model: voyage-3  # Voyage AI (recommended for Claude by Anthropic)
+  vector_store: chromadb
+  top_k: 5
+  similarity_threshold: 0.7
+  reranking: false
+  search_type: mmr
+
+chunking:
+  strategy: recursive
+  chunk_size: 512
+  chunk_overlap: 50
+
+tools:
+  - name: search_knowledge_base
+    description: >
+      Search the vector database for documents relevant to the user's question.
+      Always call this before answering factual questions.
+    parameters:
+      query:
+        type: string
+        description: The search query derived from the user's question
+      top_k:
+        type: integer
+        description: Number of results to retrieve (default 5)
+      filters:
+        type: object
+        description: Optional metadata filters (e.g., category, date range)
+
+  - name: ingest_document
+    description: >
+      Add a new document to the knowledge base. Handles chunking and embedding.
+    parameters:
+      content:
+        type: string
+        description: The document text to ingest
+      metadata:
+        type: object
+        description: Document metadata (source, title, category, date)
+
+  - name: evaluate_response
+    description: >
+      Check whether the generated answer is faithful to the retrieved context.
+    parameters:
+      answer:
+        type: string
+        description: The generated answer to evaluate
+      context:
+        type: string
+        description: The retrieved context used for generation
+
+guardrails:
+  input_validation: true
+  output_validation: true
+  max_context_tokens: 6000
+  pii_filtering: false
+
+monitoring:
+  log_queries: true
+  log_latency: true
+  log_retrieval_scores: true
+  log_token_usage: true
+
+# --- LangChain Integration ---
+# from langchain_anthropic import ChatAnthropic
+#
+# llm = ChatAnthropic(
+#     model="claude-sonnet-4-20250514",
+#     temperature=0,
+#     max_tokens=4096,
+# )
+#
+# # Claude doesn't have its own embeddings — use Voyage AI or OpenAI
+# from langchain_voyageai import VoyageAIEmbeddings
+# embeddings = VoyageAIEmbeddings(model="voyage-3")
+#
+# Requires: pip install langchain-anthropic langchain-voyageai
+# Env vars: ANTHROPIC_API_KEY, VOYAGE_API_KEY
+
+# --- LlamaIndex Integration ---
+# from llama_index.llms.anthropic import Anthropic
+#
+# llm = Anthropic(model="claude-sonnet-4-20250514", temperature=0, max_tokens=4096)
+#
+# # Use Voyage for embeddings
+# from llama_index.embeddings.voyageai import VoyageEmbedding
+# embed_model = VoyageEmbedding(model_name="voyage-3")

@@ -1,0 +1,10 @@
+Answer the question based only on the provided context. If the context doesn't contain enough information to give a complete answer, say "I don't have enough information to answer this question." Do not make up information.
+
+After each key claim, cite the source using [Source N] notation.
+
+Context:
+{context}
+
+Question: {question}
+
+Answer (with citations):

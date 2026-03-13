@@ -1,0 +1,32 @@
+[
+  {
+    "id": "doc_001",
+    "title": "Company Refund Policy",
+    "category": "policies",
+    "content": "Our company offers a 30-day refund policy for all products. Electronics must be returned in original packaging with all accessories. Software licenses are non-refundable after activation. Refund requests must be submitted through the customer portal with the original order number. Processing takes 5-7 business days after the return is received."
+  },
+  {
+    "id": "doc_002",
+    "title": "Employee Vacation Policy",
+    "category": "hr",
+    "content": "Full-time employees receive 15 days of paid vacation per year, accruing at 1.25 days per month. Unused vacation days can be carried over up to a maximum of 5 days. Vacation requests must be submitted at least 2 weeks in advance through the HR portal. Manager approval is required for requests exceeding 5 consecutive days."
+  },
+  {
+    "id": "doc_003",
+    "title": "API Rate Limiting",
+    "category": "technical",
+    "content": "Our API enforces rate limits of 100 requests per minute for free-tier users and 1000 requests per minute for premium users. Rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset) are included in every response. When the limit is exceeded, the API returns HTTP 429 with a Retry-After header. Implement exponential backoff in your client code."
+  },
+  {
+    "id": "doc_004",
+    "title": "Data Backup Procedures",
+    "category": "technical",
+    "content": "Production databases are backed up daily at 02:00 UTC with a 30-day retention period. Full backups occur weekly on Sundays, with incremental backups on other days. Backups are stored in a geographically separate region. Recovery time objective (RTO) is 4 hours. Recovery point objective (RPO) is 24 hours. Backup integrity is verified weekly through automated restore tests."
+  },
+  {
+    "id": "doc_005",
+    "title": "Onboarding Checklist",
+    "category": "hr",
+    "content": "New employee onboarding includes: Day 1 - IT setup, badge access, and team introduction. Week 1 - Complete mandatory compliance training, review employee handbook, and set up development environment. Month 1 - Meet with mentor weekly, complete first project milestone, and attend department all-hands. Month 3 - Performance check-in with manager and goal setting for the quarter."
+  }
+]

@@ -1,0 +1,114 @@
+# Google Gemini Agent Configuration for RAG Framework
+# Use this as a reference for configuring Gemini-based agents in RAG systems.
+
+agent:
+  name: rag-assistant-gemini
+  description: >
+    A retrieval-augmented generation assistant powered by Google Gemini.
+    Answers questions grounded in a knowledge base using vector search
+    to retrieve relevant context before generating answers.
+
+model:
+  name: gemini-2.0-flash
+  temperature: 0
+  max_output_tokens: 4096
+  top_p: 1.0
+  top_k: 40
+  # Alternative models:
+  #   gemini-2.5-pro      — best quality, reasoning tasks
+  #   gemini-2.0-flash    — fast, cost-efficient
+  #   gemini-1.5-pro      — 1M token context window
+
+system_prompt_file: ../templates/system_prompt.txt
+
+behavior:
+  grounding: strict
+  abstention: true
+  citations: true
+  streaming: true
+
+retrieval:
+  embedding_model: models/text-embedding-004  # Google embedding model
+  vector_store: chromadb
+  top_k: 5
+  similarity_threshold: 0.7
+  reranking: false
+  search_type: mmr
+
+chunking:
+  strategy: recursive
+  chunk_size: 512
+  chunk_overlap: 50
+
+tools:
+  - name: search_knowledge_base
+    description: >
+      Search the vector database for documents relevant to the user's question.
+      Always call this before answering factual questions.
+    parameters:
+      query:
+        type: string
+        description: The search query derived from the user's question
+      top_k:
+        type: integer
+        description: Number of results to retrieve (default 5)
+      filters:
+        type: object
+        description: Optional metadata filters (e.g., category, date range)
+
+  - name: ingest_document
+    description: >
+      Add a new document to the knowledge base. Handles chunking and embedding.
+    parameters:
+      content:
+        type: string
+        description: The document text to ingest
+      metadata:
+        type: object
+        description: Document metadata (source, title, category, date)
+
+  - name: evaluate_response
+    description: >
+      Check whether the generated answer is faithful to the retrieved context.
+    parameters:
+      answer:
+        type: string
+        description: The generated answer to evaluate
+      context:
+        type: string
+        description: The retrieved context used for generation
+
+guardrails:
+  input_validation: true
+  output_validation: true
+  max_context_tokens: 6000
+  pii_filtering: false
+
+monitoring:
+  log_queries: true
+  log_latency: true
+  log_retrieval_scores: true
+  log_token_usage: true
+
+# --- LangChain Integration ---
+# from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+#
+# llm = ChatGoogleGenerativeAI(
+#     model="gemini-2.0-flash",
+#     temperature=0,
+#     max_output_tokens=4096,
+# )
+#
+# embeddings = GoogleGenerativeAIEmbeddings(
+#     model="models/text-embedding-004",
+# )
+#
+# Requires: pip install langchain-google-genai
+# Env var: GOOGLE_API_KEY
+
+# --- LlamaIndex Integration ---
+# from llama_index.llms.gemini import Gemini
+# from llama_index.embeddings.gemini import GeminiEmbedding
+#
+# llm = Gemini(model="models/gemini-2.0-flash", temperature=0)
+# embed_model = GeminiEmbedding(model_name="models/text-embedding-004")

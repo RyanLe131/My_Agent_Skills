@@ -1,0 +1,74 @@
+[
+  {
+    "question": "What is the refund policy for electronics?",
+    "ground_truth": "Electronics must be returned within 30 days in original packaging with all accessories. Refund processing takes 5-7 business days.",
+    "relevant_doc_ids": ["doc_001"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "Are software licenses refundable?",
+    "ground_truth": "Software licenses are non-refundable after activation.",
+    "relevant_doc_ids": ["doc_001"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "How many vacation days do full-time employees get?",
+    "ground_truth": "Full-time employees receive 15 days of paid vacation per year, accruing at 1.25 days per month.",
+    "relevant_doc_ids": ["doc_002"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "Can unused vacation days be carried over?",
+    "ground_truth": "Yes, unused vacation days can be carried over up to a maximum of 5 days.",
+    "relevant_doc_ids": ["doc_002"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "What are the API rate limits for premium users?",
+    "ground_truth": "Premium users have a rate limit of 1000 requests per minute.",
+    "relevant_doc_ids": ["doc_003"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "What happens when the API rate limit is exceeded?",
+    "ground_truth": "The API returns HTTP 429 with a Retry-After header. Clients should implement exponential backoff.",
+    "relevant_doc_ids": ["doc_003"],
+    "difficulty": "reasoning"
+  },
+  {
+    "question": "How often are production databases backed up?",
+    "ground_truth": "Production databases are backed up daily at 02:00 UTC with full backups on Sundays and incremental backups on other days.",
+    "relevant_doc_ids": ["doc_004"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "What is the recovery time objective for database backups?",
+    "ground_truth": "The recovery time objective (RTO) is 4 hours.",
+    "relevant_doc_ids": ["doc_004"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "Compare the vacation policy carry-over rules with the refund policy timeframe.",
+    "ground_truth": "Vacation days can carry over up to 5 days to the next year. Refunds must be requested within 30 days of purchase and take 5-7 business days to process.",
+    "relevant_doc_ids": ["doc_001", "doc_002"],
+    "difficulty": "comparison"
+  },
+  {
+    "question": "What should a new employee complete in their first week?",
+    "ground_truth": "In the first week, new employees should complete mandatory compliance training, review the employee handbook, and set up their development environment.",
+    "relevant_doc_ids": ["doc_005"],
+    "difficulty": "simple"
+  },
+  {
+    "question": "What is the company's policy on quantum computing?",
+    "ground_truth": "The knowledge base does not contain information about quantum computing.",
+    "relevant_doc_ids": [],
+    "difficulty": "abstention"
+  },
+  {
+    "question": "How do the API rate limit headers work and what should developers do when throttled?",
+    "ground_truth": "The API includes X-RateLimit-Limit, X-RateLimit-Remaining, and X-RateLimit-Reset headers in every response. When throttled (HTTP 429), developers should read the Retry-After header and implement exponential backoff.",
+    "relevant_doc_ids": ["doc_003"],
+    "difficulty": "reasoning"
+  }
+]
